@@ -1,0 +1,18 @@
+[project]
+name = "penguify"
+version = "0.1.0"
+description = "Hacker News with Penguins"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.13.4",
+    "boto3>=1.40.10",
+    "google-genai>=1.30.0",
+    "pillow>=11.3.0",
+    "pydantic>=2.11.7",
+    "requests>=2.32.4",
+    "trafilatura>=2.0.0",
+]
+
+[tool.ruff]
+line-length = 120
