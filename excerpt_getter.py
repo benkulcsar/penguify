@@ -21,10 +21,10 @@ def get_story_excerpt(story: Story) -> str:
     if story.text:
         logger.info(f"Cleaning HTML for story ID {getattr(story, 'id', None)}")
         raw_excerpt = _clean_html_to_text(story.text)
-        excerpt = _trim_excerpt(raw_excerpt)
     else:
         logger.info(f"Fetching external excerpt for story ID {getattr(story, 'id', None)} from URL: {story.url}")
-        excerpt = _get_external_excerpt(story.url) if isinstance(story.url, str) else ""
+        raw_excerpt = _get_external_excerpt(story.url) if isinstance(story.url, str) else ""
+    excerpt = _trim_excerpt(raw_excerpt)
     return excerpt
 
 
