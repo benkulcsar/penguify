@@ -1,0 +1,52 @@
+name: Penguify
+
+on:
+  schedule:
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  penguify:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: us-east-1
+      FETCH_TIMEOUT: ${{ vars.FETCH_TIMEOUT }}
+      IMAGES_BASE_DIR: ${{ vars.IMAGES_BASE_DIR  }}
+      MANIFEST_S3_KEY: ${{ vars.MANIFEST_S3_KEY }}
+      HN_STORIES_JSON_PATH: ${{ vars.HN_STORIES_JSON_PATH }}
+      WAIT_BETWEEN_REQUESTS_SECONDS: ${{ vars.WAIT_BETWEEN_REQUESTS_SECONDS }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python (from pyproject)
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: pyproject.toml
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - name: Sync deps from lockfile
+        run: uv sync --locked
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Fetch top Hacker News stories
+        run: |
+          make stories
+      - name: Generate images
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          IMAGE_GEN_INSTRUCTIONS: ${{ secrets.IMAGE_GEN_INSTRUCTIONS }}
+          MODEL_NAME: ${{ secrets.MODEL_NAME }}
+        run: |
+          make images
+      - name: Upload images to S3
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+        run: |
+          make upload
