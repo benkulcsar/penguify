@@ -10,6 +10,6 @@ images:
 	@uv run -m src.penguify.generate_images
 
 upload:
-	@uv run -m penguify.upload_to_s3
+	@uv run -m src.penguify.upload_to_s3
 
 run: stories pics upload
