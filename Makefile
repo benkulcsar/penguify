@@ -4,12 +4,12 @@ lint:
 	@pre-commit run -a
 
 stories:
-	@uv run fetch_stories.py
+	@uv run -m src.penguify.fetch_stories
 
 images:
-	@uv run generate_images.py
+	@uv run -m src.penguify.generate_images
 
 upload:
-	@uv run upload_to_s3.py
+	@uv run -m src.penguify.upload_to_s3
 
 run: stories pics upload

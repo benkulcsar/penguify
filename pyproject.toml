@@ -10,9 +10,15 @@ dependencies = [
     "google-genai>=1.30.0",
     "pillow>=11.3.0",
     "pydantic>=2.11.7",
+    "pydantic-settings>=2.4.1",
     "requests>=2.32.4",
     "trafilatura>=2.0.0",
 ]
 
 [tool.ruff]
 line-length = 120
+
+[tool.mypy]
+mypy_path = ["src/penguify"]
+explicit_package_bases = true
+disallow_untyped_defs = true
