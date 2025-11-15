@@ -2,7 +2,7 @@
 
 **Illustrate Hacker News with penguins** 🐧
 
-🚧 This is a work in progress. 🚧
+🌇 **The party is over**: the free image generation model in the Gemini API has been discontinued.
 
 Penguified Hacker News can be found [here](https://benkulcsar.github.io/penguify.html).
 
